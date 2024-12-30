@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Web con Encuesta y Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    #alerta, #encuesta, #felicitacion {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 0, 0, 0.9);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+      overflow: auto;
+      padding: 1rem;
+    }
+
+    #alerta h1, #encuesta h1, #felicitacion h1 {
+      font-size: 2.5rem;
+      margin: 0.5rem;
+    }
+
+    #alerta p, #encuesta p, #felicitacion p {
+      margin: 1rem 0;
+      font-size: 1rem;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    #alerta label, #encuesta label {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    #alerta button, #encuesta button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #alerta button:disabled, #encuesta button:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+
+    .pregunta {
+      margin: 1rem 0;
+      max-width: 600px;
+    }
+
+    .opcion {
+      margin: 0.5rem 0;
+    }
+
+    #video-container {
+      display: none;
+      text-align: center;
+      margin: 2rem;
+    }
+
+    #video-container video {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="alerta">
+    <h1>¡Atención!</h1>
+    <p>El periodo de prueba ha finalizado:</p>
+    <p>
+      A partir de este mismo instante, lo que comenzó como una historia mágica y dio lugar a un "Nos estamos conociendo", ha finalizado su periodo de prueba.
+      es necesario pasar a un segundo nivel.
+	</p>
+    <label>
+      <input type="checkbox" id="aceptoEula" onchange="habilitarBoton()"> He leído y acepto los términos y condiciones.
+    </label>
+    <button id="continuar" onclick="cerrarAlerta()" disabled>Entendido</button>
+  </div>
+
+  <div id="encuesta" style="display: none;">
+    <h1>Encuesta Rápida</h1>
+    <p>Ayúdanos a mejorar respondiendo esta breve encuesta:</p>
+
+    <div class="pregunta">
+      <p>1. ¿Cómo calificarías tu experiencia con el periodo de prueba?</p>
+      <div class="opcion"><label><input type="radio" name="experiencia" value="Excelente"> Sencillamente, Perfecta.</label></div>
+      <div class="opcion"><label><input type="radio" name="experiencia" value="Buena"> Siempre se puede mejorar.</label></div>
+      <div class="opcion"><label><input type="radio" name="experiencia" value="Regular" disabled> Necesito renovar periodo de prueba.</label></div>
+    </div>
+	<div class="pregunta">
+      <p>2. ¿Qué Nuevo plan quiere adquirir?</p>
+      <div class="opcion"><label><input type="radio" name="plan" value="Compañero"> Compañero de vida (compromiso de por vida)</label></div>
+      <div class="opcion"><label><input type="radio" name="plan" value="No more" disabled> No hay mas opciones.</label></div>
+   </div>
+
+    <button onclick="mostrarFelicitacion()">Enviar Respuesta</button>
+  </div>
+
+  <div id="felicitacion" style="display: none;">
+    <h1>¡Gracias por adquirir su Compañero de Vida!</h1>
+    <p id="mensajePersonalizado"></p>
+  </div>
+
+  <div id="video-container">
+    <h2>Video Especial</h2>
+    <video controls>
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      Tu navegador no soporta la reproducción de video.
+    </video>
+  </div>
+
+  <script>
+    // Habilitar el botón cuando se marque el checkbox
+    function habilitarBoton() {
+      const checkbox = document.getElementById('aceptoEula');
+      const boton = document.getElementById('continuar');
+      boton.disabled = !checkbox.checked; // Habilita el botón si está marcado
+    }
+
+    // Cerrar la alerta y mostrar la encuesta
+    function cerrarAlerta() {
+      document.getElementById('alerta').style.display = 'none';
+      document.getElementById('encuesta').style.display = 'flex';
+    }
+
+    // Mostrar el mensaje de felicitación
+    function mostrarFelicitacion() {
+      const felicitacionDiv = document.getElementById('felicitacion');
+      const mensaje = document.getElementById('mensajePersonalizado');
+      const fechaActual = new Date();
+      const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
+      const fechaFormateada = fechaActual.toLocaleDateString('es-ES', opcionesFecha);
+
+	  mensaje.innerHTML = `La fecha de adquisión de su nuevo plan es: <span style="color: blue;">${fechaFormateada}</span>, Dejaremos un breve resumen de su periodo de prueba. ¡Gracias!`;
+
+      //mensaje.innerText = `La fecha de adquisión de su nuevo plan es: <span style="color: blue;"> ${fechaFormateada} </span>, Dejaremos un breve resumen de su periodo de prueba. ¡Gracias!`;
+
+      document.getElementById('encuesta').style.display = 'none';
+      felicitacionDiv.style.display = 'flex';
+
+      // Mostrar el video después de 3 segundos
+      setTimeout(() => {
+        felicitacionDiv.style.display = 'none';
+        document.getElementById('video-container').style.display = 'block';
+      }, 10000);
+    }
+  </script>
+</body>
+</html>
