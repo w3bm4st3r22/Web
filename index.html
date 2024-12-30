@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Página Web con Encuesta y Video</title>
   <style>
-    /* Estilos generales */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -14,7 +13,6 @@
       color: #333;
     }
 
-    /* Contenedores de pantalla completa */
     #alerta, #encuesta, #felicitacion {
       position: fixed;
       top: 0;
@@ -32,26 +30,27 @@
       padding: 1rem;
     }
 
-    /* Texto de encabezados */
-    h1 {
-      font-size: 2rem;
+    #alerta h1, #encuesta h1, #felicitacion h1 {
+      font-size: 2.5rem;
       margin: 0.5rem;
-      text-align: center;
     }
 
-    /* Texto general */
-    p {
+    #alerta p, #encuesta p, #felicitacion p {
       margin: 1rem 0;
       font-size: 1rem;
       text-align: center;
       max-width: 600px;
     }
 
-    /* Estilos para el botón */
-    button {
+    #alerta label, #encuesta label {
       margin-top: 1rem;
-      padding: 0.7rem 1.5rem;
-      font-size: 1.1rem;
+      font-size: 1rem;
+    }
+
+    #alerta button, #encuesta button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
       background-color: #333;
       color: white;
       border: none;
@@ -59,28 +58,20 @@
       cursor: pointer;
     }
 
-    button:disabled {
+    #alerta button:disabled, #encuesta button:disabled {
       background-color: #888;
       cursor: not-allowed;
     }
 
-    /* Encuesta */
     .pregunta {
       margin: 1rem 0;
       max-width: 600px;
-      width: 100%;
     }
 
     .opcion {
       margin: 0.5rem 0;
-      text-align: left;
     }
 
-    label {
-      font-size: 1rem;
-    }
-
-    /* Contenedor de video */
     #video-container {
       display: none;
       text-align: center;
@@ -92,48 +83,10 @@
       height: auto;
       border: 1px solid #ccc;
     }
-
-    /* Ajustes responsivos */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      p {
-        font-size: 1rem;
-      }
-
-      button {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-      }
-
-      .pregunta {
-        width: 90%; /* Más espacio en pantallas pequeñas */
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.2rem;
-      }
-
-      p {
-        font-size: 0.9rem;
-      }
-
-      button {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-      }
-
-      .pregunta {
-        width: 85%;
-      }
-    }
   </style>
 </head>
 <body>
+  <!-- Alerta de mensaje -->
   <div id="alerta">
     <h1>¡Atención!</h1>
     <p>El periodo de prueba ha finalizado:</p>
@@ -147,6 +100,7 @@
     <button id="continuar" onclick="cerrarAlerta()" disabled>Entendido</button>
   </div>
 
+  <!-- Encuesta -->
   <div id="encuesta" style="display: none;">
     <h1>Encuesta Rápida</h1>
     <p>Ayúdanos a mejorar respondiendo esta breve encuesta:</p>
@@ -167,11 +121,13 @@
     <button onclick="mostrarFelicitacion()">Enviar Respuesta</button>
   </div>
 
+  <!-- Felicitación -->
   <div id="felicitacion" style="display: none;">
     <h1>¡Gracias por adquirir su Compañero de Vida!</h1>
     <p id="mensajePersonalizado"></p>
   </div>
 
+  <!-- Contenedor del video -->
   <div id="video-container">
     <h2>Video Especial</h2>
     <video controls>
@@ -180,7 +136,18 @@
     </video>
   </div>
 
+  <!-- Reproducción del sonido -->
+  <audio id="alertSound" src=".\alarma.wav" preload="auto"></audio>
+
   <script>
+    // Reproducir el sonido de alerta al cargar la página
+    window.onload = function() {
+      const alertaSound = document.getElementById("alertSound");
+      alertaSound.play().catch(error => {
+        console.log("Error al intentar reproducir el sonido: " + error);
+      });
+    };
+
     // Habilitar el botón cuando se marque el checkbox
     function habilitarBoton() {
       const checkbox = document.getElementById('aceptoEula');
