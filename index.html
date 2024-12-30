@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Página Web con Encuesta y Video</title>
   <style>
+    /* Estilos generales */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -13,6 +14,7 @@
       color: #333;
     }
 
+    /* Contenedores de pantalla completa */
     #alerta, #encuesta, #felicitacion {
       position: fixed;
       top: 0;
@@ -30,27 +32,26 @@
       padding: 1rem;
     }
 
-    #alerta h1, #encuesta h1, #felicitacion h1 {
-      font-size: 2.5rem;
+    /* Texto de encabezados */
+    h1 {
+      font-size: 2rem;
       margin: 0.5rem;
+      text-align: center;
     }
 
-    #alerta p, #encuesta p, #felicitacion p {
+    /* Texto general */
+    p {
       margin: 1rem 0;
       font-size: 1rem;
       text-align: center;
       max-width: 600px;
     }
 
-    #alerta label, #encuesta label {
+    /* Estilos para el botón */
+    button {
       margin-top: 1rem;
-      font-size: 1rem;
-    }
-
-    #alerta button, #encuesta button {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1.1rem;
       background-color: #333;
       color: white;
       border: none;
@@ -58,20 +59,28 @@
       cursor: pointer;
     }
 
-    #alerta button:disabled, #encuesta button:disabled {
+    button:disabled {
       background-color: #888;
       cursor: not-allowed;
     }
 
+    /* Encuesta */
     .pregunta {
       margin: 1rem 0;
       max-width: 600px;
+      width: 100%;
     }
 
     .opcion {
       margin: 0.5rem 0;
+      text-align: left;
     }
 
+    label {
+      font-size: 1rem;
+    }
+
+    /* Contenedor de video */
     #video-container {
       display: none;
       text-align: center;
@@ -83,6 +92,45 @@
       height: auto;
       border: 1px solid #ccc;
     }
+
+    /* Ajustes responsivos */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+      }
+
+      .pregunta {
+        width: 90%; /* Más espacio en pantallas pequeñas */
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .pregunta {
+        width: 85%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -91,8 +139,8 @@
     <p>El periodo de prueba ha finalizado:</p>
     <p>
       A partir de este mismo instante, lo que comenzó como una historia mágica y dio lugar a un "Nos estamos conociendo", ha finalizado su periodo de prueba.
-      es necesario pasar a un segundo nivel.
-	</p>
+      Es necesario pasar a un segundo nivel.
+    </p>
     <label>
       <input type="checkbox" id="aceptoEula" onchange="habilitarBoton()"> He leído y acepto los términos y condiciones.
     </label>
@@ -109,11 +157,12 @@
       <div class="opcion"><label><input type="radio" name="experiencia" value="Buena"> Siempre se puede mejorar.</label></div>
       <div class="opcion"><label><input type="radio" name="experiencia" value="Regular" disabled> Necesito renovar periodo de prueba.</label></div>
     </div>
-	<div class="pregunta">
-      <p>2. ¿Qué Nuevo plan quiere adquirir?</p>
+
+    <div class="pregunta">
+      <p>2. ¿Qué nuevo plan quieres adquirir?</p>
       <div class="opcion"><label><input type="radio" name="plan" value="Compañero"> Compañero de vida (compromiso de por vida)</label></div>
-      <div class="opcion"><label><input type="radio" name="plan" value="No more" disabled> No hay mas opciones.</label></div>
-   </div>
+      <div class="opcion"><label><input type="radio" name="plan" value="No more" disabled> No hay más opciones.</label></div>
+    </div>
 
     <button onclick="mostrarFelicitacion()">Enviar Respuesta</button>
   </div>
@@ -153,14 +202,12 @@
       const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
       const fechaFormateada = fechaActual.toLocaleDateString('es-ES', opcionesFecha);
 
-	  mensaje.innerHTML = `La fecha de adquisión de su nuevo plan es: <span style="color: blue;">${fechaFormateada}</span>, Dejaremos un breve resumen de su periodo de prueba. ¡Gracias!`;
-
-      //mensaje.innerText = `La fecha de adquisión de su nuevo plan es: <span style="color: blue;"> ${fechaFormateada} </span>, Dejaremos un breve resumen de su periodo de prueba. ¡Gracias!`;
+      mensaje.innerHTML = `La fecha de adquisición de su nuevo plan es: <span style="color: blue;">${fechaFormateada}</span>, Dejaremos un breve resumen de su periodo de prueba. ¡Gracias!`;
 
       document.getElementById('encuesta').style.display = 'none';
       felicitacionDiv.style.display = 'flex';
 
-      // Mostrar el video después de 3 segundos
+      // Mostrar el video después de 10 segundos
       setTimeout(() => {
         felicitacionDiv.style.display = 'none';
         document.getElementById('video-container').style.display = 'block';
